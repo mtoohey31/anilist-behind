@@ -34,7 +34,7 @@ const current_query = "query CurrentQuery($userId: Int, $page: Int) {
     pageInfo {
       hasNextPage
     },
-    mediaList(userId: $userId, type: ANIME, status: CURRENT) {
+    mediaList(userId: $userId, type: ANIME, status_in: [CURRENT, PLANNING]) {
       media {
         episodes,
         nextAiringEpisode {
