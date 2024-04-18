@@ -1,4 +1,2 @@
 /flake.lock -diff
 /manifest.toml -diff
-
-/build/packages/** linguist-generated=true

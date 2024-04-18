@@ -2,16 +2,14 @@
   "nodes": {
     "gleam2nix": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1713418928,
-        "narHash": "sha256-2XVq5igqiKNS/ARtYxtHKmOAwEmGpLc5yqFxnQX+3lI=",
+        "lastModified": 1713459313,
+        "narHash": "sha256-kWhU2CHVGHbjp774fLknloJwnjaoHurdN+LHrEBfDQU=",
         "owner": "mtoohey31",
         "repo": "gleam2nix",
-        "rev": "aca3e8d96f033befabca300aed76faa0fa689498",
+        "rev": "f3716d79ce5639db73acf5555f265470de9b9201",
         "type": "github"
       },
       "original": {
@@ -38,7 +36,10 @@
     "root": {
       "inputs": {
         "gleam2nix": "gleam2nix",
-        "nixpkgs": "nixpkgs",
+        "nixpkgs": [
+          "gleam2nix",
+          "nixpkgs"
+        ],
         "utils": "utils"
       }
     },

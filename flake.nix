@@ -2,12 +2,9 @@
   description = "anilist-behind";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    nixpkgs.follows = "gleam2nix/nixpkgs";
     utils.url = "github:numtide/flake-utils";
-    gleam2nix = {
-      url = "github:mtoohey31/gleam2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    gleam2nix.url = "github:mtoohey31/gleam2nix";
   };
 
   outputs = { self, nixpkgs, utils, gleam2nix }: {
@@ -30,12 +27,12 @@
         overlays = [ self.overlays.default ];
         inherit system;
       };
-      inherit (pkgs) anilist-behind mkShell stdenvNoCC;
+      inherit (pkgs) anilist-behind mkShell;
     in
     {
       packages.default = anilist-behind;
 
-      devShells.default = mkShell.override { stdenv = stdenvNoCC; } {
+      devShells.default = mkShell {
         inputsFrom = [ anilist-behind ];
       };
     });
