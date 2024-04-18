@@ -3,6 +3,5 @@
 
 *.beam
 *.ez
-/build/*
-!/build/packages
+/build
 erl_crash.dump

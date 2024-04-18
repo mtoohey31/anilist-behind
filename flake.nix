@@ -4,39 +4,25 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixpkgs-unstable";
     utils.url = "github:numtide/flake-utils";
+    gleam2nix = {
+      url = "github:mtoohey31/gleam2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, utils }: {
-    overlays.default = final: _: {
-      # TODO: Use checksums in manifest to avoid having to commit packages.
-      anilist-behind = final.callPackage
-        ({ erlang, gleam, makeWrapper, rebar3, stdenvNoCC }: stdenvNoCC.mkDerivation rec {
-          pname = "anilist-behind";
-          inherit (builtins.fromTOML (builtins.readFile (src + "/gleam.toml")))
-            version;
+  outputs = { self, nixpkgs, utils, gleam2nix }: {
+    overlays = rec {
+      expects-gleam2nix = final: _: {
+        anilist-behind = final.buildGleamProgram {
+          bin-name = "anilist-behind";
           src = builtins.path { path = ./.; name = "anilist-behind-src"; };
-          buildInputs = [ erlang ];
-          nativeBuildInputs = [ gleam makeWrapper rebar3 ];
-          buildPhase = ''
-            runHook preBuild
-
-            gleam export erlang-shipment
-
-            runHook postBuild
-          '';
-          installPhase = ''
-            runHook preInstall
-
-            mkdir -p $out/{bin,share}
-            cp -r build/erlang-shipment $out/share/erlang
-            makeWrapper $out/share/erlang/entrypoint.sh \
-              $out/bin/anilist-behind --add-flags run \
-              --prefix PATH : ${erlang}/bin
-
-            runHook postInstall
-          '';
-        })
-        { };
+          doCheck = false;
+        };
+      };
+      default = nixpkgs.lib.composeManyExtensions [
+        gleam2nix.overlays.default
+        expects-gleam2nix
+      ];
     };
   } // utils.lib.eachDefaultSystem (system:
     let

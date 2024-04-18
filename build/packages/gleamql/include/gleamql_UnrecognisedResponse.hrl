@@ -1,1 +1,0 @@
--record(unrecognised_response, {response :: binary()}).
